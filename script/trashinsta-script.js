@@ -102,8 +102,7 @@
           <h2 class="ad-header">🎬 Watch Advertisement</h2>
           <div class="ad-content">
             <div class="ad-video-placeholder">
-              <div class="play-icon"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7730916065550976"
-     crossorigin="anonymous"></script></div>
+              <div class="play-icon">my ads
             </div>
             <div class="ad-title">Premium Instagram Analytics Tool</div>
             <div class="ad-description">
