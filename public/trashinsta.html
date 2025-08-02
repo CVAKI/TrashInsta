@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trash-Insta | Instagram Non-Follower Checker</title>
+    <link rel="stylesheet" href="../assets/style/trashinsta-style.css">
+</head>
+<body>
+  <div class="background-animation"></div>
+  
+  <div class="container">
+    <div class="header">
+      <h1 class="logo">Trash-Insta</h1>
+      <p class="tagline">Professional Instagram Non-Follower Checker</p>
+    </div>
+
+    <div class="upload-section">
+      <div class="file-group">
+        <label class="file-label">📁 Upload your followers.html file:</label>
+        <div class="file-input-wrapper">
+          <input type="file" id="followersFile" class="file-input" accept=".html">
+          <label for="followersFile" class="file-input-label" id="followersLabel">
+            Choose followers.html file
+          </label>
+        </div>
+      </div>
+
+      <div class="file-group">
+        <label class="file-label">📁 Upload your following.html file:</label>
+        <div class="file-input-wrapper">
+          <input type="file" id="followingFile" class="file-input" accept=".html">
+          <label for="followingFile" class="file-input-label" id="followingLabel">
+            Choose following.html file
+          </label>
+        </div>
+      </div>
+
+      <button class="analyze-btn" onclick="analyze()" id="analyzeBtn" disabled>
+        🔍 Analyze Non-Followers
+      </button>
+    </div>
+
+    <div id="results"></div>
+  </div>
+
+    <script src="../script/trashinsta-script.js"></script>
+</body>
+</html>
