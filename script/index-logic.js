@@ -210,7 +210,7 @@
           <h2 class="verify-header">🛡️ Human Verification</h2>
           <div class="verify-ad-content">
             <div class="verify-ad-placeholder">
-              <div class="verify-play-icon">my ads========================================================================= </div>
+              <div class="verify-play-icon">my ads= </div>
             </div>
             <div class="ad-title">Verify You're Human</div>
             <div class="ad-description">
@@ -276,5 +276,6 @@
       }
 
     });
+
 
 
