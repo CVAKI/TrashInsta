@@ -102,8 +102,7 @@
           <h2 class="ad-header">🎬 Watch Advertisement</h2>
           <div class="ad-content">
             <div class="ad-video-placeholder">
-              <div class="play-icon">my ads
-            </div>
+              <div class="play-icon">my ads ================================================================</div>
             <div class="ad-title">Premium Instagram Analytics Tool</div>
             <div class="ad-description">
               Discover advanced features for Instagram growth! 
@@ -283,4 +282,5 @@
       }
     `;
     document.head.appendChild(style);
+
 
