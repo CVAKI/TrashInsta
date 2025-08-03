@@ -7,6 +7,84 @@
     let currentVerificationCode = '';
     const VERIFY_DURATION = 30;
 
+    // GDPR Compliance Status Management
+    function updateGDPRStatus() {
+      const statusElement = document.getElementById('gdprStatus');
+      
+      // Check if Cookiebot is loaded and what consent state we're in
+      if (typeof Cookiebot !== 'undefined' && Cookiebot.consent) {
+        if (Cookiebot.consent.marketing) {
+          statusElement.textContent = '✅ GDPR Compliant - Marketing cookies accepted';
+          statusElement.className = 'gdpr-status show';
+        } else if (Cookiebot.consent.necessary) {
+          statusElement.textContent = '⚠️ Essential cookies only - Marketing blocked';
+          statusElement.className = 'gdpr-status show warning';
+        } else {
+          statusElement.textContent = '🔄 Waiting for cookie consent...';
+          statusElement.className = 'gdpr-status show warning';
+        }
+      } else {
+        statusElement.textContent = '🔄 Loading cookie consent system...';
+        statusElement.className = 'gdpr-status show warning';
+      }
+      
+      // Hide status after 5 seconds
+      setTimeout(() => {
+        statusElement.classList.remove('show');
+      }, 5000);
+    }
+
+    // Initialize GDPR status check
+    window.addEventListener('load', () => {
+      updateGDPRStatus();
+      
+      // Show verify button
+      setTimeout(() => {
+        document.getElementById('verifyBtn').classList.add('show');
+      }, 2000);
+    });
+
+    // Listen for Cookiebot consent changes
+    window.addEventListener('CookiebotOnConsentReady', function() {
+      updateGDPRStatus();
+      
+      // Update Google Consent Mode based on Cookiebot consent
+      if (typeof gtag !== 'undefined') {
+        gtag('consent', 'update', {
+          'ad_storage': Cookiebot.consent.marketing ? 'granted' : 'denied',
+          'ad_user_data': Cookiebot.consent.marketing ? 'granted' : 'denied', 
+          'ad_personalization': Cookiebot.consent.marketing ? 'granted' : 'denied',
+          'analytics_storage': Cookiebot.consent.statistics ? 'granted' : 'denied',
+          'functionality_storage': Cookiebot.consent.preferences ? 'granted' : 'denied',
+          'personalization_storage': Cookiebot.consent.preferences ? 'granted' : 'denied'
+        });
+        
+        console.log('Google Consent Mode updated:', {
+          marketing: Cookiebot.consent.marketing,
+          statistics: Cookiebot.consent.statistics,
+          preferences: Cookiebot.consent.preferences,
+          necessary: Cookiebot.consent.necessary
+        });
+      }
+    });
+
+    // Also listen for consent changes (when user changes their mind)
+    window.addEventListener('CookiebotOnConsentChanged', function() {
+      updateGDPRStatus();
+      
+      // Update Google Consent Mode
+      if (typeof gtag !== 'undefined') {
+        gtag('consent', 'update', {
+          'ad_storage': Cookiebot.consent.marketing ? 'granted' : 'denied',
+          'ad_user_data': Cookiebot.consent.marketing ? 'granted' : 'denied',
+          'ad_personalization': Cookiebot.consent.marketing ? 'granted' : 'denied', 
+          'analytics_storage': Cookiebot.consent.statistics ? 'granted' : 'denied',
+          'functionality_storage': Cookiebot.consent.preferences ? 'granted' : 'denied',
+          'personalization_storage': Cookiebot.consent.preferences ? 'granted' : 'denied'
+        });
+      }
+    });
+
     // Generate random verification code
     function generateVerificationCode() {
       const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -16,13 +94,6 @@
       }
       return code;
     }
-
-    // Show verify button when page loads
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        document.getElementById('verifyBtn').classList.add('show');
-      }, 2000);
-    });
 
     // Scroll detection
     window.addEventListener('scroll', () => {
@@ -401,4 +472,8 @@
         modal.remove();
       }
     }
-  
+
+    // Add some debugging for GDPR compliance
+    console.log('GDPR Compliance System Loaded');
+    console.log('Google Consent Mode initialized with default DENIED state');
+    console.log('Cookiebot will handle consent updates automatically');
