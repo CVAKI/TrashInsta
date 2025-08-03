@@ -5,19 +5,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trash-Insta | Professional Instagram Analytics</title>
   
-  <!-- Cookiebot Consent Management -->
-  <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="50467695-b8bd-42dc-8872-35d71ecd45a9" data-blockingmode="auto" type="text/javascript"></script>
+  <!-- Google Consent Mode - Must be loaded FIRST -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    
+    // Set default consent state (DENIED by default for GDPR compliance)
+    gtag('consent', 'default', {
+      'ad_storage': 'denied',
+      'ad_user_data': 'denied',
+      'ad_personalization': 'denied',
+      'analytics_storage': 'denied',
+      'functionality_storage': 'denied',
+      'personalization_storage': 'denied',
+      'security_storage': 'granted', // Security cookies can be granted by default
+      'wait_for_update': 2000
+    });
+  </script>
   
-  <!-- Google AdSense - Only loads after marketing consent -->
-  <script type="text/plain" data-cookieconsent="marketing" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7730916065550976" crossorigin="anonymous"></script>
+  <!-- Cookiebot Consent Management - Updated Configuration -->
+  <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" 
+          data-cbid="50467695-b8bd-42dc-8872-35d71ecd45a9" 
+          data-blockingmode="auto" 
+          data-framework="GoogleConsentMode"
+          type="text/javascript"></script>
+  
+  <!-- Google AdSense - Properly configured with consent -->
+  <script type="text/plain" data-cookieconsent="marketing" async 
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7730916065550976" 
+          crossorigin="anonymous"></script>
+  
+  <!-- Google Analytics (if you use it) - Also needs consent -->
+  <script type="text/plain" data-cookieconsent="statistics" async 
+          src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+  <script type="text/plain" data-cookieconsent="statistics">
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'GA_MEASUREMENT_ID');
+  </script>
+
   <link rel="stylesheet" href="assets/style/indexstyle.css">
 </head>
 <body>
   <div class="background-animation"></div>
   
+  <!-- GDPR Compliance Status Indicator -->
+  <div class="gdpr-status" id="gdprStatus">
+    🍪 Loading consent preferences...
+  </div>
+  
   <div class="header">
     <h1 class="logo">Trash-Insta</h1>
-    <p class="tagline">Professional Instagram Analytics Platform by CVAKI </p>
+    <p class="tagline">Professional Instagram Analytics Platform</p>
     <p class="scroll-instruction">📜 Scroll down to get verification code</p>
   </div>
 
@@ -127,7 +167,7 @@
         </div>
       </div>
     </div>
-      <div class="section">
+     <div class="section">
       <div class="ad-card">
         <h2 class="ad-title">ads</h2>
         <p class="ad-subtitle">This will help as to pay </p>
@@ -372,6 +412,28 @@
         </div>
        </div>
 
+
+    <!-- GDPR Cookie Information Section -->
+    <div class="section">
+      <div class="ad-card">
+        <div class="cookie-container">
+          <div class="cookie-icon">🍪</div>
+          <div class="cookie-info">
+            <h3>Cookie Consent & Privacy</h3>
+            <p>
+              We respect your privacy and comply with GDPR regulations. 
+              Our site uses cookies to enhance your experience and show relevant advertisements. 
+              You can manage your preferences anytime using the cookie settings.
+            </p>
+          </div>
+        </div>
+        
+        <div class="cookie-declaration-wrapper">
+          <script id="CookieDeclaration" src="https://consent.cookiebot.com/50467695-b8bd-42dc-8872-35d71ecd45a9/cd.js" type="text/javascript" async></script>
+        </div>
+      </div>
+    </div>
+
     <!-- Bottom Section with Countdown and Verification Code -->
     <div class="bottom-section" id="bottomSection">
       <div class="countdown-container" id="countdownContainer">
@@ -400,7 +462,7 @@
         <div class="footer-links">
           <a href="#" onclick="showPrivacyModal()">🛡️ Privacy Policy</a>
           <a href="#" onclick="Cookiebot.renew()">🍪 Change Cookie Consent</a>
-           <a href="public/feedback.html">📝 Feedback</a>
+          <a href="public/feedback.html">📝 Feedback</a>
           <a href="#" onclick="showTermsModal()">📋 Terms of Service</a>
         </div>
         <div class="footer-text">
@@ -413,14 +475,9 @@
       </div>
     </footer>
   </div>
-
   <div class="scroll-indicator" id="scrollIndicator">
     ⬇️ Scroll down to continue
   </div>
-<script src="script/index-logic.js"></script>
+  <script src="script/index-logic.js"></script>
 </body>
 </html>
-
-
-
-
