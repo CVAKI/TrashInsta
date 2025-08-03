@@ -1,3 +1,4 @@
+
     let countdownStarted = false;
     let verificationCompleted = false;
     let countdownTimer = null;
@@ -210,7 +211,7 @@
           <h2 class="verify-header">🛡️ Human Verification</h2>
           <div class="verify-ad-content">
             <div class="verify-ad-placeholder">
-              <div class="verify-play-icon">my ads= </div>
+              <div class="verify-play-icon">▶️</div>
             </div>
             <div class="ad-title">Verify You're Human</div>
             <div class="ad-description">
@@ -274,8 +275,130 @@
         e.preventDefault();
         e.returnValue = 'Please complete human verification first!';
       }
-
     });
 
+    // Privacy Policy Modal
+    function showPrivacyModal() {
+      const modal = document.createElement('div');
+      modal.className = 'privacy-modal';
+      modal.innerHTML = `
+        <div class="privacy-content">
+          <button class="close-privacy-btn" onclick="closePrivacyModal()">×</button>
+          <h2 class="privacy-header">🛡️ Privacy Policy</h2>
+          
+          <div class="privacy-section">
+            <h3>Information We Collect</h3>
+            <p class="privacy-text">
+              We collect information you provide directly to us, such as when you create an account, 
+              use our services, or contact us for support. This may include your Instagram username, 
+              email address, and usage analytics.
+            </p>
+          </div>
 
+          <div class="privacy-section">
+            <h3>How We Use Your Information</h3>
+            <p class="privacy-text">
+              We use the information we collect to provide, maintain, and improve our Instagram 
+              analytics services, communicate with you, and ensure the security of our platform.
+            </p>
+          </div>
 
+          <div class="privacy-section">
+            <h3>Cookies and Tracking</h3>
+            <p class="privacy-text">
+              We use cookies and similar technologies to analyze usage patterns, improve user 
+              experience, and provide personalized content. You can manage your cookie preferences 
+              using our cookie consent tool.
+            </p>
+          </div>
+
+          <div class="privacy-section">
+            <h3>Data Security</h3>
+            <p class="privacy-text">
+              We implement appropriate security measures to protect your personal information 
+              against unauthorized access, alteration, disclosure, or destruction.
+            </p>
+          </div>
+
+          <div class="privacy-section">
+            <h3>Contact Us</h3>
+            <p class="privacy-text">
+              If you have any questions about this Privacy Policy, please contact us through 
+              our feedback form or support channels.
+            </p>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+
+    function closePrivacyModal() {
+      const modal = document.querySelector('.privacy-modal');
+      if (modal) {
+        modal.remove();
+      }
+    }
+
+    function showTermsModal() {
+      const modal = document.createElement('div');
+      modal.className = 'privacy-modal';
+      modal.innerHTML = `
+        <div class="privacy-content">
+          <button class="close-privacy-btn" onclick="closeTermsModal()">×</button>
+          <h2 class="privacy-header">📋 Terms of Service</h2>
+          
+          <div class="privacy-section">
+            <h3>Acceptance of Terms</h3>
+            <p class="privacy-text">
+              By accessing and using Trash-Insta analytics platform, you accept and agree to be 
+              bound by the terms and provision of this agreement.
+            </p>
+          </div>
+
+          <div class="privacy-section">
+            <h3>Use License</h3>
+            <p class="privacy-text">
+              Permission is granted to temporarily access our platform for personal, 
+              non-commercial transitory viewing only. This license shall automatically 
+              terminate if you violate any of these restrictions.
+            </p>
+          </div>
+
+          <div class="privacy-section">
+            <h3>Instagram Compliance</h3>
+            <p class="privacy-text">
+              Our service operates in compliance with Instagram's Terms of Service and API 
+              guidelines. Users must ensure their Instagram accounts comply with Instagram's 
+              community guidelines.
+            </p>
+          </div>
+
+          <div class="privacy-section">
+            <h3>Limitation of Liability</h3>
+            <p class="privacy-text">
+              Trash-Insta shall not be liable for any damages arising from the use or inability 
+              to use our analytics platform, including but not limited to data accuracy or 
+              service availability.
+            </p>
+          </div>
+
+          <div class="privacy-section">
+            <h3>Service Modifications</h3>
+            <p class="privacy-text">
+              We reserve the right to modify or discontinue our service at any time without 
+              notice. We shall not be liable for any modification, suspension, or discontinuance 
+              of the service.
+            </p>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+
+    function closeTermsModal() {
+      const modal = document.querySelector('.privacy-modal');
+      if (modal) {
+        modal.remove();
+      }
+    }
+  
