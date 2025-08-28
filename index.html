@@ -106,6 +106,10 @@
     gtag('config', 'GA_MEASUREMENT_ID');
   </script>
 
+    <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
   <link rel="stylesheet" href="assets/style/indexstyle.css">
 </head>
 <body>
@@ -549,6 +553,14 @@
       </button>
     </main>
 
+     <!-- Recent Reviews Section -->
+    <div class="reviews-section" id="reviewsSection">
+      <h2 class="reviews-title">📝 Recent Feedback</h2>
+      <div class="reviews-container" id="reviewsContainer">
+        <!-- Reviews will be loaded here -->
+      </div>
+    </div>
+
     <!-- Bottom Section for scroll detection -->
     <div id="bottomSection">
       <!-- GDPR Cookie Information -->
@@ -590,7 +602,6 @@
   <script src="script/index-logic.js"></script>
 </body>
 </html>
-
 
 
 
