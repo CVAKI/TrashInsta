@@ -4,9 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trash-Insta | Instagram Non-Follower Checker</title>
-    <link rel="stylesheet" href="../assets/style/trashinsta-style.css">
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7730916065550976"
-     crossorigin="anonymous"></script>
+   <link rel="stylesheet" href="../assets/style/trashinsta-style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7730916065550976" crossorigin="anonymous"></script>
 </head>
 <body>
   <div class="background-animation"></div>
@@ -15,27 +14,73 @@
     <div class="header">
       <h1 class="logo">Trash-Insta</h1>
       <p class="tagline">Professional Instagram Non-Follower Checker</p>
+      <p class="description">Upload your Instagram data ZIP file and discover who doesn't follow you back!</p>
+    </div>
+
+    <!-- Ad Section -->
+    <div class="ad-section">
+      <div class="ad-banner">
+      <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-format="fluid"
+      data-ad-layout-key="-fb+5w+4e-db+86"
+      data-ad-client="ca-pub-7730916065550976"
+      data-ad-slot="9941761519"></ins>
+      </div>
     </div>
 
     <div class="upload-section">
+      <div class="instructions">
+        <h3>📋 How to get your Instagram data:</h3>
+        <ol>
+          <li>Go to Instagram Settings → Privacy and Security</li>
+          <li>Click "Download Your Information"</li>
+          <li>Select "Some of your information" and choose "Followers and Following"</li>
+          <li>Choose HTML format and download</li>
+          <li>Upload the ZIP file here!</li>
+        </ol>
+      </div>
+
       <div class="file-group">
-        <label class="file-label">📁 Upload your followers.html file:</label>
+        <label class="file-label">📦 Upload your Instagram data ZIP file:</label>
         <div class="file-input-wrapper">
-          <input type="file" id="followersFile" class="file-input" accept=".html">
-          <label for="followersFile" class="file-input-label" id="followersLabel">
-            Choose followers.html file
+          <input type="file" id="zipFile" class="file-input" accept=".zip">
+          <label for="zipFile" class="file-input-label" id="zipLabel">
+            <div class="upload-icon">📦</div>
+            <div class="upload-text">
+              <span class="main-text">Choose Instagram ZIP file</span>
+              <span class="sub-text">Or drag and drop here</span>
+            </div>
           </label>
         </div>
       </div>
 
-      <div class="file-group">
-        <label class="file-label">📁 Upload your following.html file:</label>
-        <div class="file-input-wrapper">
-          <input type="file" id="followingFile" class="file-input" accept=".html">
-          <label for="followingFile" class="file-input-label" id="followingLabel">
-            Choose following.html file
-          </label>
+      <div class="manual-upload" id="manualUpload" style="display: none;">
+        <h4>Or upload files manually:</h4>
+        <div class="file-group">
+          <label class="file-label">📁 Followers file:</label>
+          <div class="file-input-wrapper">
+            <input type="file" id="followersFile" class="file-input" accept=".html">
+            <label for="followersFile" class="file-input-label" id="followersLabel">
+              Choose followers.html file
+            </label>
+          </div>
         </div>
+        <div class="file-group">
+          <label class="file-label">📁 Following file:</label>
+          <div class="file-input-wrapper">
+            <input type="file" id="followingFile" class="file-input" accept=".html">
+            <label for="followingFile" class="file-input-label" id="followingLabel">
+              Choose following.html file
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="toggle-manual">
+        <button class="toggle-btn" onclick="toggleManualUpload()">
+          Switch to manual upload
+        </button>
       </div>
 
       <button class="analyze-btn" onclick="analyze()" id="analyzeBtn" disabled>
@@ -43,10 +88,44 @@
       </button>
     </div>
 
+    <!-- Processing Status -->
+    <div id="processingStatus" class="processing-status" style="display: none;">
+      <div class="status-content">
+        <div class="spinner"></div>
+        <div class="status-text">Extracting and analyzing your Instagram data...</div>
+        <div class="status-steps">
+          <div class="step" id="step1">📦 Extracting ZIP file...</div>
+          <div class="step" id="step2">📊 Finding followers and following files...</div>
+          <div class="step" id="step3">🔍 Analyzing data...</div>
+        </div>
+      </div>
+    </div>
+
     <div id="results"></div>
+
+    <!-- Bottom Ad Section -->
+    <div class="ad-section bottom-ad">
+      <div class="ad-banner">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-7730916065550976"
+             data-ad-slot="0987654321"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>&copy; 2024 Trash-Insta. Made with ❤️ for Instagram users.</p>
+      <p class="disclaimer">We don't store any of your data. Everything is processed locally in your browser.</p>
+    </footer>
   </div>
 
-    <script src="../script/trashinsta-script.js"></script>
+  <!-- JSZip Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+ <script src="../script/trashinsta-script.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
 </body>
-
 </html>
