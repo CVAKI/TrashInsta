@@ -471,3 +471,350 @@ function closeTermsModal() {
 console.log('GDPR Compliance System Loaded');
 console.log('Google Consent Mode initialized with default DENIED state');
 console.log('Cookiebot will handle consent updates automatically');
+
+// Firebase Configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDfx4S7Hww-JpovtYcFvE7Jfl1mhSxRRyc",
+  authDomain: "trashinsta-review.firebaseapp.com",
+  projectId: "trashinsta-review",
+  storageBucket: "trashinsta-review.firebasestorage.app",
+  messagingSenderId: "564393414993",
+  appId: "1:564393414993:web:67e4b60f91d6e0bab50370",
+  measurementId: "G-M3XGVJYX22"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// DOM Elements
+const stars = document.querySelectorAll('.star');
+const ratingText = document.getElementById('ratingText');
+const ratingInput = document.getElementById('rating');
+const submitBtn = document.getElementById('submitBtn');
+const loadingSpinner = document.getElementById('loadingSpinner');
+const successMessage = document.getElementById('successMessage');
+const errorMessage = document.getElementById('errorMessage');
+const reviewsContainer = document.getElementById('reviewsContainer');
+
+// Global Variables
+let currentRating = 0;
+
+// Rating Text Messages
+const ratingTexts = {
+  0: 'Click to rate',
+  1: 'Poor - Needs significant improvement',
+  2: 'Fair - Below expectations', 
+  3: 'Good - Meets expectations',
+  4: 'Very Good - Exceeds expectations',
+  5: 'Excellent - Outstanding!'
+};
+
+// Star Rating System
+function initializeStarRating() {
+  stars.forEach(star => {
+    star.addEventListener('click', () => {
+      currentRating = parseInt(star.dataset.rating);
+      ratingInput.value = currentRating;
+      updateStarRating();
+    });
+
+    star.addEventListener('mouseenter', () => {
+      const hoverRating = parseInt(star.dataset.rating);
+      highlightStars(hoverRating);
+    });
+  });
+
+  const starRatingElement = document.getElementById('starRating');
+  if (starRatingElement) {
+    starRatingElement.addEventListener('mouseleave', () => {
+      updateStarRating();
+    });
+  }
+}
+
+function highlightStars(rating) {
+  stars.forEach((star, index) => {
+    if (index < rating) {
+      star.classList.add('active');
+    } else {
+      star.classList.remove('active');
+    }
+  });
+  if (ratingText) {
+    ratingText.textContent = ratingTexts[rating];
+  }
+}
+
+function updateStarRating() {
+  highlightStars(currentRating);
+}
+
+// Generate Stars for Display
+function generateStars(rating) {
+  let starsHtml = '';
+  for (let i = 1; i <= 5; i++) {
+    if (i <= rating) {
+      starsHtml += '★';
+    } else {
+      starsHtml += '☆';
+    }
+  }
+  return starsHtml;
+}
+
+// Format Date - Fixed to handle various timestamp formats
+function formatDate(timestamp) {
+  if (!timestamp) return 'Just now';
+  
+  let date;
+  try {
+    if (timestamp && typeof timestamp.toDate === 'function') {
+      // Firestore Timestamp
+      date = timestamp.toDate();
+    } else if (timestamp instanceof Date) {
+      date = timestamp;
+    } else if (typeof timestamp === 'string' || typeof timestamp === 'number') {
+      // String or number timestamp
+      date = new Date(timestamp);
+    } else {
+      return 'Just now';
+    }
+    
+    // Check if date is valid
+    if (isNaN(date.getTime())) {
+      return 'Just now';
+    }
+    
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  } catch (error) {
+    console.error('Error formatting date:', error);
+    return 'Just now';
+  }
+}
+
+// Display Reviews - Enhanced error handling and debugging
+function displayReviews() {
+  console.log('Starting to fetch reviews...');
+  
+  if (!reviewsContainer) {
+    console.error('Reviews container element not found!');
+    return;
+  }
+
+  // Show loading message
+  reviewsContainer.innerHTML = '<div class="no-reviews"><p>Loading reviews...</p></div>';
+
+  db.collection("feedback")
+    .orderBy("timestamp", "desc")
+    .limit(10)
+    .get()
+    .then((querySnapshot) => {
+      console.log('Query completed. Document count:', querySnapshot.size);
+      
+      reviewsContainer.innerHTML = '';
+      
+      if (querySnapshot.empty) {
+        console.log('No documents found in feedback collection');
+        reviewsContainer.innerHTML = `
+          <div class="no-reviews">
+            <p>No feedback yet. Be the first to share your thoughts!</p>
+          </div>
+        `;
+        return;
+      }
+
+      querySnapshot.forEach((doc) => {
+        const review = doc.data();
+        console.log('Review data:', review);
+        const reviewElement = createReviewElement(review);
+        reviewsContainer.appendChild(reviewElement);
+      });
+    })
+    .catch((error) => {
+      console.error("Error fetching reviews: ", error);
+      reviewsContainer.innerHTML = `
+        <div class="no-reviews">
+          <p>Unable to load reviews: ${error.message}</p>
+          <button onclick="displayReviews()" style="margin-top: 10px; padding: 5px 10px; background: rgba(225, 48, 108, 0.2); border: 1px solid rgba(225, 48, 108, 0.5); color: white; border-radius: 5px; cursor: pointer;">Try Again</button>
+        </div>
+      `;
+    });
+}
+
+// Create Review Element - Enhanced with better error handling
+function createReviewElement(review) {
+  const reviewDiv = document.createElement('div');
+  reviewDiv.className = 'review-item';
+  
+  // Safely get review properties with fallbacks
+  const userName = review.user_name || review.userName || 'Anonymous';
+  const subject = review.subject || 'General Feedback';
+  const message = review.message || 'No message provided';
+  const rating = parseInt(review.rating) || 0;
+  const timestamp = review.timestamp || review.createdAt || new Date();
+  
+  reviewDiv.innerHTML = `
+    <div class="review-header">
+      <span class="review-author">${escapeHtml(userName)}</span>
+      <span class="review-rating">${generateStars(rating)}</span>
+    </div>
+    <div class="review-subject">${escapeHtml(subject)}</div>
+    <div class="review-message">${escapeHtml(message)}</div>
+    <div class="review-date">${formatDate(timestamp)}</div>
+  `;
+  
+  return reviewDiv;
+}
+
+// Helper function to escape HTML
+function escapeHtml(text) {
+  const map = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  };
+  return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
+}
+
+// Form Submission - Enhanced with better error handling
+function initializeForm() {
+  const formElement = document.getElementById('feedbackForm');
+  if (!formElement) {
+    console.error('Feedback form not found!');
+    return;
+  }
+
+  // Set device/browser info
+  const userAgentInput = document.getElementById('user_agent');
+  const timestampInput = document.getElementById('timestamp');
+  
+  if (userAgentInput) userAgentInput.value = navigator.userAgent;
+  if (timestampInput) timestampInput.value = new Date().toISOString();
+
+  // Form submission handler
+  formElement.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    console.log('Form submitted, current rating:', currentRating);
+    
+    // Validate rating
+    if (currentRating === 0) {
+      alert('Please provide a rating before submitting your feedback.');
+      return;
+    }
+    
+    // Hide previous messages
+    if (successMessage) successMessage.style.display = 'none';
+    if (errorMessage) errorMessage.style.display = 'none';
+    
+    // Show loading state
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      if (loadingSpinner) loadingSpinner.style.display = 'inline-block';
+      submitBtn.innerHTML = '<div class="loading-spinner" style="display: inline-block;"></div> Sending...';
+    }
+    
+    // Prepare feedback data
+    const feedbackData = {
+      user_name: document.getElementById('user_name')?.value || 'Anonymous',
+      user_email: document.getElementById('user_email')?.value || '',
+      subject: document.getElementById('subject')?.value || 'General Feedback',
+      rating: currentRating,
+      message: document.getElementById('message')?.value || '',
+      user_agent: navigator.userAgent,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      website_description: "Trash-Insta Analytics - Instagram analytics platform for content creators",
+      created_at: new Date().toISOString() // Backup timestamp
+    };
+
+    console.log('Saving feedback data:', feedbackData);
+
+    // Save to Firebase
+    db.collection("feedback").add(feedbackData)
+      .then((docRef) => {
+        console.log("Document written with ID: ", docRef.id);
+        
+        // Show success message
+        if (successMessage) {
+          successMessage.style.display = 'block';
+          successMessage.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Reset form
+        formElement.reset();
+        currentRating = 0;
+        if (ratingInput) ratingInput.value = 0;
+        updateStarRating();
+        
+        // Refresh displayed reviews after a short delay
+        setTimeout(() => {
+          displayReviews();
+        }, 1000);
+      })
+      .catch((error) => {
+        console.error("Error adding document: ", error);
+        
+        // Show error message
+        if (errorMessage) {
+          errorMessage.textContent = `Error: ${error.message}`;
+          errorMessage.style.display = 'block';
+          errorMessage.scrollIntoView({ behavior: 'smooth' });
+        }
+      })
+      .finally(() => {
+        // Reset button state
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          if (loadingSpinner) loadingSpinner.style.display = 'none';
+          submitBtn.innerHTML = '🚀 Send Feedback';
+        }
+      });
+  });
+}
+
+// Debug function to test Firebase connection
+function testFirebaseConnection() {
+  console.log('Testing Firebase connection...');
+  
+  db.collection("feedback").limit(1).get()
+    .then((querySnapshot) => {
+      console.log('Firebase connection successful. Document count:', querySnapshot.size);
+      if (querySnapshot.size > 0) {
+        querySnapshot.forEach((doc) => {
+          console.log('Sample document:', doc.id, doc.data());
+        });
+      }
+    })
+    .catch((error) => {
+      console.error('Firebase connection error:', error);
+    });
+}
+
+// Initialize everything when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOM loaded, initializing...');
+  
+  // Test Firebase connection first
+  testFirebaseConnection();
+  
+  // Initialize components
+  initializeStarRating();
+  initializeForm();
+  
+  // Load reviews with a small delay to ensure Firebase is ready
+  setTimeout(() => {
+    displayReviews();
+  }, 500);
+});
+
+// Make displayReviews globally accessible for retry button
+window.displayReviews = displayReviews;
